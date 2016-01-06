@@ -1,4 +1,4 @@
-# Where the game is run
+from players import *
 
 
 class Game(object):
@@ -10,8 +10,14 @@ class Game(object):
 		self.round = 0
 
 
+	def common_location_deck(self):
+		# build the common location deck, probably from a text file eventually, but for now just a couple manually
+		pass
+
 	def run_game(self, players):
 
-		self.players = players
+		for name, faction in players.items():
+			self.players.append(Player(name, Faction(faction)))
 
-		print self.players
+		for player in self.players:
+			print '%s is playing as the %s' % (player.name, player.faction.name)
