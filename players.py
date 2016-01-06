@@ -22,6 +22,8 @@ class Player(object):
 
 		self.hand = []
 
+		self.board = Board()
+
 		self.deals = []
 
 		self.common_production = []
