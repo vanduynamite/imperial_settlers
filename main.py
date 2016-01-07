@@ -7,8 +7,10 @@ def main():
 	game = Game()
 
 	players = {
-	'Paul': 'Romans',
-	'Audrey': 'Egyptians',
+	'Roland': 'Roman',
+	'Lorenzo': 'Egyptian',
+	'Evan': 'Japanese',
+	'Josh': 'Barbarian',
 	}
 
 	game.run_game(players)

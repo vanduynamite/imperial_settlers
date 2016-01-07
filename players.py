@@ -29,6 +29,10 @@ class Player(object):
 
 		self.board = Board(self)
 
+	def receive_income(self):
+		for resource, amount in self.income.items():
+			self.resources[resource] += amount
+
 	def buy_location(self):
 		# choose the location you want to buy from within this hand
 		pass
