@@ -5,6 +5,7 @@ class Ability(object):
 
 	def __init__(self, trigger, resources_in, resources_out):
 		self.trigger = trigger
+		self.available = True
 
 		self.resources_in = resources_in
 		self.resources_out = resources_out

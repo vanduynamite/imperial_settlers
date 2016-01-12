@@ -7,6 +7,8 @@ class Board(object):
 
 		self.deals = []
 
+		self.locations = []
+
 		self.common_production = []
 		self.common_features = []
 		self.common_actions = []

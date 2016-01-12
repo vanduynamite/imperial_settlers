@@ -27,6 +27,7 @@ class Player(object):
 
 		self.hand = []
 		self.deck = [] # evetually inherit from the faction
+		self.passed = False
 
 		self.board = Board(self)
 
@@ -37,7 +38,7 @@ class Player(object):
 		for deal in self.board.deals:
 			for resource, qty in deal.items():
 				self.resources[resource] += qty
-				
+
 		# any deals
 		# any production cards
 		# anything else?
@@ -64,12 +65,25 @@ class Player(object):
 		pass
 
 	def base_trade(self):
-		# perform a base trade
-		pass
+		print 'Trade for what?'
+		print '0 - Cancel'
+		print '1 - Wood'
+		print '2 - Stone'
+		print '3 - Food'
+		print '4 - Common card'
+		print '5 - Faction card'
+
+		a = input('')
+
+		if self.base_trade_possible():
+			print '1 - Done trading'
+			print '2 - Trade again'
+			if input('') == 2:
+				self.base_trade
 
 	def pass_action(self):
 		# when the player passes, discard all resources and reset all action cards
-		pass
+		self.passed = True
 
 ####################################
 
@@ -111,6 +125,34 @@ class Player(object):
 
 		return can_raze
 
+	def raze_opponent_location_possible(self):
+
+		can_raze = False
+
+		################################################
+		# this one will need to be done a little later #
+		################################################
+
+		return can_raze
+
+	def location_action_possible(self):
+
+		can_take_action = False
+
+		for location in self.board.locations:
+			for action in location.abilities:
+				if action.trigger == 'action' and action.available == True:
+					
+					can_afford = True
+
+					for resource, qty in action.resources_in.items():
+						if self.resources[resource] < qty:
+							can_afford = False
+					
+					if can_afford:
+						can_take_action = True
+
+		return can_take_action
 
 	def base_trade_possible(self):
 		if self.resources['Workers'] > 1:
@@ -124,21 +166,23 @@ class Player(object):
 		actions = []
 
 		if self.build_possible():
-			actions.append('Build')
+			actions.append({'Build' : self.build()})
 
 		if self.deal_possible():
-			actions.append('Make a Deal')
+			actions.append({'Make a Deal' : self.make_a_deal()})
 
 		if self.raze_from_hand_possible():
-			actions.append('Raze from Hand')
+			actions.append({'Raze from Hand' : self.raze_from_hand()})
+
+		if self.raze_opponent_location_possible():
+			actions.append({'Raze Opponent Location' : self.raze_opponent_location()})
 
 		if self.base_trade_possible():
-			actions.append('Base Trade')
+			actions.append({'Base Trade' : self.base_trade()})
+
+		actions.append({'Pass' : self.pass_action()})
 
 		return actions
-		# raze from hand
-		# raze opponent's
-		# location action
 
 	def list_resources(self):
 		print '   %s\'s resources:' % self.name

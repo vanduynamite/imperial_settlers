@@ -48,11 +48,15 @@ class Game(object):
 		self.lookout_phase()
 		self.receive_income()
 
+		# un-pass everyone
+		for player in self.turn_order:
+			player.passed = False
+
 		# while all players have not passed, circle around taking turns
 		for player in self.turn_order:
-			print '%s\'s actions: ' %player.name, player.check_actions()
-			#player.list_resources()
-
+			if not(player.passed):
+				print '%s\'s actions: ' %player.name, player.check_actions()
+				#player.list_resources()
 
 		print ' End round %i!' % self.round
 
