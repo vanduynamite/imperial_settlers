@@ -21,12 +21,17 @@ class Game(object):
 			self.turn_order.append(a)
 
 	def start_game(self):
-		#what do I even need to do in here?
 		print 'Begin the game!'
 
+		# every player gets 2 common cards and 2 faction cards
+
 	def lookout_phase(self):
-		# do the lookout phase
-		print '  Lookout phase'
+		print '  Lookout phase, round %i' % self.round
+
+		# every player gets one faction card to start
+
+		# lay out players + 1 common cards
+		# loop through player order and have them choose one each
 
 	def receive_income(self):
 		# get income from all sources
@@ -45,10 +50,9 @@ class Game(object):
 
 		# while all players have not passed, circle around taking turns
 		for player in self.turn_order:
-			print '   %s\'s resources:' % player.name
+			print '%s\'s actions: ' %player.name, player.check_actions()
+			#player.list_resources()
 
-			for resource, amount in player.resources.items():
-				print '    %s - %i' % (resource, amount)
 
 		print ' End round %i!' % self.round
 
@@ -56,15 +60,17 @@ class Game(object):
 		# determine victor...?
 		print 'End the game?'
 
+	def list_players(self):
+		for player in self.players:
+			print '%s is playing as the %s' % (player.name, player.faction.name) 
+
 	def run_game(self, players):
 
 		# set up the players
 		for name, faction in players.items():
 			self.players.append(Player(name, Faction(faction)))
 
-		# list the players
-		# for player in self.players:
-		# 	print '%s is playing as the %s' % (player.name, player.faction.name)
+		self.list_players()
 
 		self.start_game()
 
