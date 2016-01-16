@@ -27,6 +27,8 @@ class Player(object):
 
 		self.hand = []
 		self.deck = [] # evetually inherit from the faction
+
+		self.action_taken = False
 		self.passed = False
 
 		self.board = Board(self)
@@ -45,27 +47,26 @@ class Player(object):
 
 	def build(self):
 		# choose the location you want to buy from within this hand
-		pass
+		self.action_taken = True
 
 	def make_a_deal(self):
 		# choose the location from within your hand and make the deal
-		pass
+		self.action_taken = True
 
 	def raze_from_hand(self):
 		# choose the location that will be razed from within this hand
-		pass
+		self.action_taken = True
 
 	def raze_opponent_location(self):
 		# choose the location from the other players in the game
 		# get the raze stuff and give that player a foundation and a WOOD!
-		pass
+		self.action_taken = True
 
 	def location_action(self):
 		# choose an action from your locations to take
-		pass
+		self.action_taken = True
 
 	def base_trade(self):
-		print 'Trade for what?'
 		print '0 - Cancel'
 		print '1 - Wood'
 		print '2 - Stone'
@@ -73,16 +74,18 @@ class Player(object):
 		print '4 - Common card'
 		print '5 - Faction card'
 
-		a = input('')
+		a = input('Trade for what? ')
 
-		if self.base_trade_possible():
+		if a!=0 and self.base_trade_possible():
 			print '1 - Done trading'
 			print '2 - Trade again'
 			if input('') == 2:
-				self.base_trade
+				self.base_trade()
+			self.action_taken = True
 
 	def pass_action(self):
 		# when the player passes, discard all resources and reset all action cards
+		self.action_taken = True
 		self.passed = True
 
 ####################################
@@ -163,24 +166,22 @@ class Player(object):
 	def check_actions(self):
 		# check to see which actions this player can take
 
-		actions = []
+		actions = [{'Pass' : self.pass_action}]
 
 		if self.build_possible():
-			actions.append({'Build' : self.build()})
+			actions.append({'Build' : self.build})
 
 		if self.deal_possible():
-			actions.append({'Make a Deal' : self.make_a_deal()})
+			actions.append({'Make a Deal' : self.make_a_deal})
 
 		if self.raze_from_hand_possible():
-			actions.append({'Raze from Hand' : self.raze_from_hand()})
+			actions.append({'Raze from Hand' : self.raze_from_hand})
 
 		if self.raze_opponent_location_possible():
-			actions.append({'Raze Opponent Location' : self.raze_opponent_location()})
+			actions.append({'Raze Opponent Location' : self.raze_opponent_location})
 
 		if self.base_trade_possible():
-			actions.append({'Base Trade' : self.base_trade()})
-
-		actions.append({'Pass' : self.pass_action()})
+			actions.append({'Base Trade' : self.base_trade})
 
 		return actions
 

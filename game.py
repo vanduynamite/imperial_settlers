@@ -4,12 +4,21 @@ from players import *
 class Game(object):
 	def __init__(self):
 		self.num_players = 0
-		self.num_rounds = 5
+		self.num_rounds = 1
 		self.players = []
 
 		self.round = 0
 
 		self.turn_order = []
+
+	def all_players_passed(self):
+		all_passed = True
+
+		for player in self.players:
+			if not(player.passed):
+				all_passed = False
+
+		return all_passed
 
 	def set_turn_order(self):
 		if self.turn_order == []:
@@ -41,6 +50,22 @@ class Game(object):
 
 		print '  Everyone gets income'
 
+	def choose_action(self, player):
+		actions = player.check_actions()
+		print '%s\'s possible actions: ' % player.name
+
+		for action_num in range(len(actions)):
+			for name, action in actions[action_num].items():
+				print ' %i - %s' % (action_num, name)
+
+		action_choice = input('  Take which action? ')
+
+		for name, action in actions[action_choice].items():
+			name = name
+			action = action
+
+		return action
+
 	def run_round(self):
 		print ' Begin round %i!' % self.round
 
@@ -53,10 +78,26 @@ class Game(object):
 			player.passed = False
 
 		# while all players have not passed, circle around taking turns
-		for player in self.turn_order:
+		turn_count = 0
+		while not(self.all_players_passed()):
+			
+			player = self.players[turn_count]
+
 			if not(player.passed):
-				print '%s\'s actions: ' %player.name, player.check_actions()
-				#player.list_resources()
+
+				player.action_taken = False
+
+				while not(player.action_taken):
+					player.list_resources()
+					
+					action = self.choose_action(player)
+					
+					action()
+
+			else:
+				print '%s has already passed' % player.name
+
+			turn_count = (turn_count + 1) % self.num_players
 
 		print ' End round %i!' % self.round
 
@@ -73,6 +114,8 @@ class Game(object):
 		# set up the players
 		for name, faction in players.items():
 			self.players.append(Player(name, Faction(faction)))
+
+		self.num_players = len(self.players)
 
 		self.list_players()
 
