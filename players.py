@@ -10,8 +10,10 @@ class Player(object):
 	def __init__(self, name, faction):
 		
 		self.name = name
+
 		self.faction = faction
 		self.income = self.faction.income
+		self.resources_to_keep = self.faction.resources_to_keep
 
 		self.resources = {
 		'Workers': 0,
@@ -21,9 +23,9 @@ class Player(object):
 		'Raze': 0,
 		'Defense': 0,
 		'Gold': 0,
-		'Victory': 0,
-		'Foundation' : 0,
 		}
+
+		self.victory = 0
 
 		self.hand = []
 		self.deck = [] # evetually inherit from the faction
@@ -67,26 +69,68 @@ class Player(object):
 		self.action_taken = True
 
 	def base_trade(self):
-		print '0 - Cancel'
-		print '1 - Wood'
-		print '2 - Stone'
-		print '3 - Food'
-		print '4 - Common card'
-		print '5 - Faction card'
 
-		a = input('Trade for what? ')
+		print ''
+		print '   Possible trades:'
+		print '    0 - Cancel'
+		print '    1 - Wood'
+		print '    2 - Stone'
+		print '    3 - Food'
+		print '    4 - Common card'
+		print '    5 - Faction card'
 
-		if a!=0 and self.base_trade_possible():
-			print '1 - Done trading'
-			print '2 - Trade again'
-			if input('') == 2:
-				self.base_trade()
+		a = input('   Trade for what? ')
+
+		# this is sloppy right now, should clean it up
+		if a == 1:
+			wood = Ability('trade', {'Workers' : 2}, {'Wood' : 1})
+			wood.activate(self, 'trade')
+
+		elif a == 2:
+			stone = Ability('trade', {'Workers' : 2}, {'Stone' : 1})
+			stone.activate(self, 'trade')
+
+		elif a == 3:
+			food = Ability('trade', {'Workers' : 2}, {'Food' : 1})
+			food.activate(self, 'trade')
+
+		elif a == 4:
+			self.draw_common_card()
+
+		elif a == 5:
+			self.draw_faction_card()
+
+
+		if a != 0:
+			print '   Trade complete!'
+			self.list_resources()
+			self.action_taken = True
+
+			if self.base_trade_possible():
+				print ''
+				print '    0 - Done trading'
+				print '    1 - Trade again'
+				if input('   Trade again? ') == 1:
+					self.base_trade()
 			self.action_taken = True
 
 	def pass_action(self):
 		# when the player passes, discard all resources and reset all action cards
+		
+		for resource, qty in self.resources.items():
+			if self.resources_to_keep.count(resource) == 0:
+				self.resources[resource] = 0
+
+		self.list_resources()
+
 		self.action_taken = True
 		self.passed = True
+
+	def draw_common_card(self):
+		pass
+
+	def draw_faction_card(self):
+		pass
 
 ####################################
 
@@ -186,6 +230,7 @@ class Player(object):
 		return actions
 
 	def list_resources(self):
+		print ''
 		print '   %s\'s resources:' % self.name
 		for resource, qty in self.resources.items():
 			print '    %s - %i' % (resource, qty)

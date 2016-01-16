@@ -41,7 +41,15 @@ class Faction(object):
 		'Japanese' : japanese_income,
 		}
 
+		resources_to_keep = {
+		'Egyptian' : 'Gold',
+		'Barbarian' : 'Workers',
+		'Roman' : 'Raze',
+		'Japanese' : 'Food',
+		}
+
 		# this could be better, classes for each faction for instance...not now though.
 		self.income = all_income[name]
+		self.resources_to_keep = resources_to_keep[name]
 
 		# along with making these classes, also give them the special abilities of the faction. and perhaps the deck and stuff too. I dunno where that's going to live eventually.

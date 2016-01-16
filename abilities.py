@@ -18,18 +18,18 @@ class Ability(object):
 			pass
 
 		cancel = False
-		for resource, amount in resources_in.items():
-			if amount > player.resources[resources]:
-				print "%s does not have enough %i" % player.name, resource
+		for resource, amount in self.resources_in.items():
+			if amount > player.resources[resource]:
+				print '%s does not have enough %s' % (player.name, resource)
 				cancel = True
 
 		if cancel:
 			pass
 
-		for resource, amount in resources_in.items():
+		for resource, amount in self.resources_in.items():
 			player.resources[resource] -= amount
 
-		for resource, amount in resources_out.items():
+		for resource, amount in self.resources_out.items():
 			player.resources[resource] += amount
 
 

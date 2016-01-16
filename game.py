@@ -52,13 +52,16 @@ class Game(object):
 
 	def choose_action(self, player):
 		actions = player.check_actions()
-		print '%s\'s possible actions: ' % player.name
+
+		print ''
+		print '   %s\'s possible actions: ' % player.name
 
 		for action_num in range(len(actions)):
 			for name, action in actions[action_num].items():
-				print ' %i - %s' % (action_num, name)
+				print '    %i - %s' % (action_num, name)
 
-		action_choice = input('  Take which action? ')
+		print ''
+		action_choice = input('   Take which action? ')
 
 		for name, action in actions[action_choice].items():
 			name = name
@@ -86,6 +89,8 @@ class Game(object):
 			if not(player.passed):
 
 				player.action_taken = False
+				print ''
+				print '  Begin %s\'s turn' % player.name
 
 				while not(player.action_taken):
 					player.list_resources()
@@ -93,6 +98,8 @@ class Game(object):
 					action = self.choose_action(player)
 					
 					action()
+
+				print '  End %s\'s turn' % player.name
 
 			else:
 				print '%s has already passed' % player.name
