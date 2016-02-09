@@ -9,10 +9,8 @@ class Board(object):
 
 		self.locations = []
 
-		self.common_production = []
 		self.common_features = []
 		self.common_actions = []
 
-		self.faction_production = []
 		self.faction_features = []
 		self.faction_actions = []

@@ -42,18 +42,74 @@ class Player(object):
 			for resource, qty in deal.items():
 				self.resources[resource] += qty
 
-		# any production cards
+		for location in self.board.locations:
+			for ability in location.abilities:
+				ability.activate(self, 'begin round')
+
 		# anything else?
 
 	def build(self):
 		# choose the location you want to buy from within this hand
 		
-		################
-		# Not done yet #
-		################
+		locations = []
 
-		
-		self.action_taken = True
+		for i in reversed(range(0, len(self.hand))):
+			location = self.hand[i]
+
+			can_build_this = True
+
+			for resource, qty in location.cost.items():
+				# print self.resources[resource], qty
+				if self.resources[resource] < qty:
+					can_build_this = False
+
+			if can_build_this:
+				locations.append(self.hand.pop(i))
+
+
+		print '  %s\'s buildable locations:' %self.name
+		print '   0 - Cancel'
+
+		for i in range(1,len(locations)+1):
+			print '   %d - %s' %(i, locations[i-1].name)
+
+		print ''
+		a = input('  Build which location? ')
+
+		if a != 0:
+			location = locations.pop(a-1)
+			self.hand.append(locations)
+
+			for ability in location.abilities:
+				self.action_taken = ability.activate(self, 'build')
+
+#########################################################################
+#########################################################################
+#########################################################################
+#########################################################################
+#########################################################################
+			if self.action_taken:
+				for ability in location.abilities:
+					ability.activate(self, 'build_bonus')
+
+				self.board.locations.append(location)
+
+			for loc in self.board.locations:
+				print loc.name
+			for loc in self.hand:
+				# print loc.name
+				pass
+			
+			self.list_resources()
+
+#########################################################################
+#########################################################################
+#########################################################################
+#########################################################################
+#########################################################################
+
+		else:
+			self.action_taken = False
 
 	def make_a_deal(self):
 		# choose the location from within your hand and make the deal
@@ -175,15 +231,15 @@ class Player(object):
 
 		can_build_something = False
 
-		for card in self.hand:
+		for location in self.hand:
 
-			can_build_this_card = True
+			can_build_this_location = True
 
-			for resource, qty in card.cost.items():
+			for resource, qty in location.cost.items():
 				if self.resources[resource] < qty:
-					can_build_this_card = False
+					can_build_this_location = False
 
-			if can_build_this_card:
+			if can_build_this_location:
 				can_build_something = True
 
 		return can_build_something

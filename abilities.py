@@ -24,6 +24,7 @@ class Ability(object):
 				cancel = True
 
 		if cancel:
+			return False
 			pass
 
 		for resource, amount in self.resources_in.items():
@@ -31,5 +32,7 @@ class Ability(object):
 
 		for resource, amount in self.resources_out.items():
 			player.resources[resource] += amount
+
+		return True
 
 

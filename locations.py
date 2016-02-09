@@ -26,6 +26,8 @@ class Location(object):
 
 		self.abilities = []
 
+		self.abilities.append(Ability('build', self.cost, {}))
+
 		if self.deal != {}:
 			self.abilities.append(Ability('make_a_deal', {'Food':1}, self.deal))
 
@@ -33,7 +35,7 @@ class Location(object):
 			self.abilities.append(Ability('raze_from_hand', {'Raze':1}, self.raze))
 
 		if self.buildbonus != {}:
-			self.abilities.append(Ability('build', {}, self.buildbonus))
+			self.abilities.append(Ability('build_bonus', {}, self.buildbonus))
 
 		if self.trigger == 'Production':
 			self.abilities.append(Ability('begin_round', self.res_in, self.res_out))
@@ -89,55 +91,19 @@ def LoadCommonLocations():
 
 		common_locations.append(Location(datarow))
 
-	for location in common_locations:
-		print location.name, ': ', location.trigger
+	return common_locations
 
-		for ability in location.abilities:
-			print ' ', ability.trigger
-			print '    spend: ', ability.resources_in
-			print '    get:   ', ability.resources_out
+	# for location in common_locations:
+	# 	print location.name, ': ', location.trigger
 
-		print ''
-		print ''
+	# 	for ability in location.abilities:
+	# 		print ' ', ability.trigger
+	# 		print '    spend: ', ability.resources_in
+	# 		print '    get:   ', ability.resources_out
+
+	# 	print ''
+	# 	print ''
 		# print '   Cost: ' ,location.cost
 		# print '   Raze: ', location.raze
 		# print '   BB:   ', location.buildbonus
 		# print '   Deal: ', location.deal
-
-	# for header in headers:
-	# 	print header
-
-
-# metadata_col_nums = {
-# 	'Name' : 0,
-# 	'Faction' : 0,
-# 	'Color' : 0,
-# 	'Qty' : 0,
-# 	'Trigger' : 0,
-# 	'Trigger Limit' : 0,
-# 	}
-
-# 	resource_data = {
-# 	'Cost' : {},
-# 	'Raze' : {},
-# 	'BB' : {},
-# 	'In' : {},
-# 	'Out' : {},
-# 	}
-
-# 	for col_num in range(0,len(headers)):
-# 		col = headers[col_num]
-
-# 		if col in metadata_col_nums:
-# 			metadata_col_nums[col] = col_num
-# 		elif ' ' in col:
-# 			resource_set_type = col[0:col.find(' ')]
-# 			resource = col[col.find(' ')+1:len(col)]
-
-# 			if resource_set_type in resource_data:
-# 				resource_set = resource_data[resource_set_type]
-
-# 				resource_set[resource] = col_num
-
-# 	for resource_set, value in resource_data.items():
-# 		print resource_set, value

@@ -1,4 +1,5 @@
 from players import *
+from random import *
 
 
 class Game(object):
@@ -8,6 +9,8 @@ class Game(object):
 		self.players = []
 
 		self.round = 0
+
+		self.common_locations = []
 
 		self.turn_order = []
 
@@ -33,6 +36,9 @@ class Game(object):
 		print 'Begin the game!'
 
 		# every player gets 2 common cards and 2 faction cards
+		for player in self.players:
+			player.hand.append(self.common_locations.pop(0))
+			player.hand.append(self.common_locations.pop(0))
 
 	def lookout_phase(self):
 		print '  Lookout phase, round %i' % self.round
@@ -125,6 +131,14 @@ class Game(object):
 		self.num_players = len(self.players)
 
 		self.list_players()
+
+		# build the decks
+		self.common_locations = LoadCommonLocations()
+		shuffle(self.common_locations)
+
+		#############################
+		# uhhh and faction decks!!! #
+		#############################
 
 		self.start_game()
 
