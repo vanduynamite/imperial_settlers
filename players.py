@@ -23,9 +23,8 @@ class Player(object):
 		'Raze': 0,
 		'Defense': 0,
 		'Gold': 0,
+		'Victory': 0,
 		}
-
-		self.victory = 0
 
 		self.hand = []
 		self.deck = [] # evetually inherit from the faction
@@ -43,29 +42,57 @@ class Player(object):
 			for resource, qty in deal.items():
 				self.resources[resource] += qty
 
-		# any deals
 		# any production cards
 		# anything else?
 
 	def build(self):
 		# choose the location you want to buy from within this hand
+		
+		################
+		# Not done yet #
+		################
+
+		
 		self.action_taken = True
 
 	def make_a_deal(self):
 		# choose the location from within your hand and make the deal
+		
+		################
+		# Not done yet #
+		################
+
+		
 		self.action_taken = True
 
 	def raze_from_hand(self):
 		# choose the location that will be razed from within this hand
+		
+		################
+		# Not done yet #
+		################
+
+		
 		self.action_taken = True
 
 	def raze_opponent_location(self):
 		# choose the location from the other players in the game
 		# get the raze stuff and give that player a foundation and a WOOD!
+		
+		################
+		# Not done yet #
+		################
+
+		
 		self.action_taken = True
 
 	def location_action(self):
 		# choose an action from your locations to take
+		
+		################
+		# Not done yet #
+		################
+
 		self.action_taken = True
 
 	def base_trade(self):
@@ -127,9 +154,19 @@ class Player(object):
 		self.passed = True
 
 	def draw_common_card(self):
+		
+		################
+		# Not done yet #
+		################
+
 		pass
 
 	def draw_faction_card(self):
+		
+		################
+		# Not done yet #
+		################
+
 		pass
 
 ####################################
